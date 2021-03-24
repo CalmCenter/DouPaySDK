@@ -1,3 +1,2 @@
 include ':sdk'
-//include ':sdk'
 rootProject.name = "DouPaySDK"
