@@ -1,6 +1,5 @@
 package me.doupay.sdklib.net.interceptors;
 
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.internal.platform.Platform;
 import okio.Buffer;
 
 import static me.doupay.sdklib.Constants.openSysLog;
@@ -65,14 +63,7 @@ public class Printer {
             sb.append(logLines(builder.getType(), tag, requestBody.split(LINE_SEPARATOR), builder.getLogger(), true, builder.isLogHackEnable()));
         }
         sb.append(END_LINE);
-        switch (builder.getType()) {
-            case Platform.INFO:
-                PrintStr(Log.INFO, tag, sb.toString());
-                break;
-            default:
-                PrintStr(Log.WARN, tag, sb.toString());
-                break;
-        }
+        PrintStr(tag, sb.toString());
     }
 
     static void printJsonRequest(DefaultLoggingInterceptor.Builder builder, Request request) {
@@ -87,14 +78,7 @@ public class Printer {
             sb.append(logLines(builder.getType(), tag, requestBody.split(LINE_SEPARATOR), builder.getLogger(), true, builder.isLogHackEnable()));
         }
         sb.append(END_LINE);
-        switch (builder.getType()) {
-            case Platform.INFO:
-                PrintStr(Log.INFO, tag, sb.toString());
-                break;
-            default:
-                PrintStr(Log.WARN, tag, sb.toString());
-                break;
-        }
+        PrintStr(tag, sb.toString());
     }
 
     static void printJsonResponse(LoggingInterceptor.Builder builder, long chainMs, boolean isSuccessful,
@@ -116,14 +100,7 @@ public class Printer {
                 true, builder.isLogHackEnable()));
         }
         sb.append(END_LINE);
-        switch (builder.getType()) {
-            case Platform.INFO:
-                PrintStr(Log.INFO, tag, sb.toString());
-                break;
-            default:
-                PrintStr(Log.WARN, tag, sb.toString());
-                break;
-        }
+        PrintStr( tag, sb.toString());
 
     }
 
@@ -147,34 +124,27 @@ public class Printer {
                 true, builder.isLogHackEnable()));
         }
         sb.append(END_LINE);
-        switch (builder.getType()) {
-            case Platform.INFO:
-                PrintStr(Log.INFO, tag, sb.toString());
-                break;
-            default:
-                PrintStr(Log.WARN, tag, sb.toString());
-                break;
-        }
+        PrintStr(tag, sb.toString());
 
     }
 
-    private static void PrintStr(final int type, final String tag, final String msg) {
+    private static void PrintStr( final String tag, final String msg) {
         int len = msg.length();
         int countOfSub = len / MAX_LEN;
         if (countOfSub > 0) {
-            Log.println(type, tag, msg.substring(0, MAX_LEN));
+//            Log.println(type, tag, msg.substring(0, MAX_LEN));
             if (openSysLog) {
                 System.out.println(tag + " " + msg.substring(0, MAX_LEN));
             }
             int index = MAX_LEN;
             for (int i = 1; i < countOfSub; i++) {
                 if (msg.substring(index, index + MAX_LEN).startsWith(DEFAULT_LINE)) {
-                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, index + MAX_LEN));
+//                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, index + MAX_LEN));
                     if (openSysLog) {
                         System.out.println(tag + " " + PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, index + MAX_LEN));
                     }
                 } else {
-                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, index + MAX_LEN));
+//                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, index + MAX_LEN));
                     if (openSysLog) {
                         System.out.println(tag + " " + PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, index + MAX_LEN));
                     }
@@ -183,12 +153,12 @@ public class Printer {
             }
             if (index != len) {
                 if (msg.substring(index, len).startsWith(DEFAULT_LINE)) {
-                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, len));
+//                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, len));
                     if (openSysLog) {
                         System.out.println(tag + " " + PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, len));
                     }
                 } else {
-                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, len));
+//                    Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, len));
                     if (openSysLog) {
                         System.out.println(tag + " " + PLACEHOLDER + LINE_SEPARATOR + DEFAULT_LINE + msg.substring(index, len));
                     }
@@ -196,7 +166,7 @@ public class Printer {
 //                Log.println(type, tag, PLACEHOLDER + LINE_SEPARATOR + msg.substring(index, len));
             }
         } else {
-            Log.println(type, tag, msg);
+//            Log.println(type, tag, msg);
             if (openSysLog) {
                 System.out.println(tag + " " + msg);
             }
