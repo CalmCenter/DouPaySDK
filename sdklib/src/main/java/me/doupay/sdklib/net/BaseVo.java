@@ -1,6 +1,5 @@
 package me.doupay.sdklib.net;
 
-import androidx.annotation.Keep;
 
 public class BaseVo<D> {
     private int code;
